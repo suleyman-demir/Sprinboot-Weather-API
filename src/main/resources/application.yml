@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:weatherDb
+    driver-class-name: org.h2.Driver
+    username: admin
+    password: admin
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  config:
+      import: optional:file:.env:[.properties]
+
+weather-stack:
+  api-url: http://api.weatherstack.com/current
+  api-key: 52b82bc2de0d763250b8a28c8373dfed         #${MYKEY}                                       #52b82bc2de0d763250b8a28c8373dfed
+
+# bu kısmı gizlemek için bir yol denememiz lazım böyele güvenli değil .env kullanılabilir
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include:
+          - "*"
+          - prometheus
+
+resilience4j:
+  ratelimiter:
+    instances:
+      myRateLimiter:
+        limit-for-period: 2
+        limit-refresh-period: 1m
+        timeout-duration: 30s
+
+
